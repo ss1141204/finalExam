@@ -14,16 +14,37 @@
 		WHERE name = #{companyName}
   	</select> 
   
- 	<!-- 
- 	<resultMap id="resultMap2" ... >
-  	
-  	
+ 	<resultMap id="resultMap2" type="Company" >
+  		<id column="id" property="id" jdbcType="NUMERIC"/>
+  		<result column="name" property="name" jdbcType="VARCHAR"/>
+  		<result column="ceo" property="ceo" jdbcType="VARCHAR"/>
+  		<result column="address" property="address" jdbcType="VARCHAR"/>
+  		<result column="est_date" property="estDate" jdbcType="VARCHAR"/>
+  		<result column="website" property="website" jdbcType="VARCHAR"/>
+  		<collection property="artists" ofType="Artist">
+  			<id column="artist_id" property="id" jdbcType="NUMERIC"/>
+	  		<result column="artist_name" property="name" jdbcType="VARCHAR"/>
+	  		<result column="debut_year" property="debutYear" jdbcType="VARCHAR"/>
+	  		<result column="genre" property="genre" jdbcType="VARCHAR"/>
+	  		<result column="members" property="members" jdbcType="VARCHAR"/>
+	  		<result column="agent_id" property="agentId" jdbcType="NUMERIC"/>	  		
+  		</collection>  		
   	</resultMap>
- 	-->
  	
- 	<select id="selectCompanyWithArtists" parameterType="string"> <!-- resultMap="resultMap2" -->
-    	SELECT ...
-    	FROM ...
-    	WHERE ...   #{companyName}  ...
+ 	<select id="selectCompanyWithArtists" parameterType="string" resultMap="resultMap2">
+    	SELECT c.id, c.name,
+    		c.ceo, 
+    		c.address,
+    		c.est_date,
+    		c.website,
+    		a.id AS artist_id,
+    		a.name AS artist_name,
+    		a.debut_year, 
+    		a.genre, 
+    		a.members,
+    		a.agent_id
+       	FROM COMPANY c, ARTIST a
+    	WHERE c.id = a.agent_id  
+    	  AND c.name = #{agentName} 
   	</select> 
 </mapper>

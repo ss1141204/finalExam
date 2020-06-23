@@ -40,4 +40,13 @@
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
+	<mybatis:scan base-package="com.example.dao.mapper"/>
+
+	<!-- 또는 아래와 같이 설정 가능 -->
+	<!-- 
+	<bean id="mapperScannerConfigurer" 
+		class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.example.dao.mapper"/>
+	</bean>
+	--> 
 </beans>

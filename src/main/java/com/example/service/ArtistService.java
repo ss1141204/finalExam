@@ -6,8 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.dao.ArtistDao;
-// import com.example.dao.ArtistMapperDao;
+// import com.example.dao.ArtistDao;
+import com.example.dao.ArtistMapperDao;
 import com.example.dao.CompanyDao;
 import com.example.model.Artist;
 import com.example.model.Company;
@@ -15,8 +15,9 @@ import com.example.model.Company;
 @Service
 public class ArtistService {
 	@Autowired
-	private ArtistDao artistDao;
-	
+	// private ArtistDao artistDao;
+	private ArtistMapperDao artistDao;
+
 	@Autowired
 	private CompanyDao companyDao;
 
@@ -29,6 +30,7 @@ public class ArtistService {
 	}
 	
 	public List<Artist> getArtistsByAgent(String agentName) {
+		/*
 		Company company = companyDao.findCompanyByName(agentName);
 		if (company == null) return null;
 		List<Artist> list = artistDao.findArtistsByAgentId(company.getId());
@@ -36,14 +38,19 @@ public class ArtistService {
 			list.get(i).setAgent(company);
 		}
 		return list;
+		*/
+		return artistDao.findArtistsByAgentName(agentName);		
 	}
 	
 	public Company getAgentWithArtists(String agentName) {
+		/*
 		Company company = companyDao.findCompanyByName(agentName);
 		if (company == null) return null;
 		List<Artist> list = artistDao.findArtistsByAgentId(company.getId());
 		company.setArtists(list); 
 		return company;
+		*/
+		return companyDao.findCompanyWithArtists(agentName);		
 	}
 
 	public List<Artist> getArtistsByCondition(Map<String, String> condition) {

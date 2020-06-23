@@ -16,17 +16,51 @@
 		WHERE agent_id = #{agentId}
   	</select> 
     
-	    <!-- 
-	 	<resultMap id="resultMap1" ... >
-	  	
-	  	
-	  	</resultMap>
-	 	-->
+	<!-- 
+	<resultMap id="resultMap1" type="Artist">
+  		<id column="id" property="id" jdbcType="NUMERIC"/>
+  		<result column="name" property="name" jdbcType="VARCHAR"/>
+  		<result column="debut_year" property="debutYear" jdbcType="VARCHAR"/>
+  		<result column="genre" property="genre" jdbcType="VARCHAR"/>
+  		<result column="members" property="members" jdbcType="VARCHAR"/>
+  		<result column="agent_id" property="agentId" jdbcType="NUMERIC"/>	
+	  	<association property="agent" column="agent_id" java_type="Company">
+	  		<id column="agent_id" property="id" jdbcType="NUMERIC"/>
+	  		<result column="agent_name" property="name" jdbcType="VARCHAR"/>
+	  		<result column="ceo" property="ceo" jdbcType="VARCHAR"/>
+	  		<result column="address" property="address" jdbcType="VARCHAR"/>
+	  		<result column="est_date" property="estDate" jdbcType="VARCHAR"/>
+	  		<result column="website" property="website" jdbcType="VARCHAR"/>
+	  	</association>  	
+  	</resultMap>
+  	
+  	<select id="selectArtistsByAgentName" parameterType="string" resultMap="resultMap1">
+    	SELECT a.id, a.name, a.debut_year, a.genre,	a.members, a.agent_id, 
+    		c.id AS agent_id, 
+    		c.name AS agent_name,
+    		c.ceo, c.address, c.est_date, c.website
+    	FROM ARTIST a, COMPANY c
+    	WHERE a.agent_id = c.id 
+    	  AND c.name = #{agentName} 
+  	</select>   	
+	-->
 	 	
-	 	<select id="selectArtistsByAgentName" parameterType="string"> <!-- resultMap="resultMap1" -->
-    	SELECT ...
-    	FROM ...
-    	WHERE ...   #{agentName}  ...
+	<select id="selectArtistsByAgentName" parameterType="string" resultType="Artist">
+    	SELECT a.id, 
+    		a.name, 
+    		a.debut_year AS debutYear, 
+    		a.genre, 
+    		a.members, 
+    		a.agent_id AS agentId, 
+    		c.id AS "agent.id", 
+    		c.name AS "agent.name",
+    		c.ceo AS "agent.ceo",
+    		c.address AS "agent.address",
+    		c.est_date AS "agent.estDate",
+    		c.website AS "agent.website"
+    	FROM ARTIST a, COMPANY c
+    	WHERE a.agent_id = c.id 
+    	  AND c.name = #{agentName} 
   	</select> 
     
   	<select id="selectArtistsByCondition" parameterType="map" resultType="Artist">
